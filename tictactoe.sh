@@ -2,4 +2,8 @@
 
 echo "welcome in tic tac toe game"
 
-declare -a BOARD
+declare -a board
+
+PLAYER=X
+COMPUTER=O
+
