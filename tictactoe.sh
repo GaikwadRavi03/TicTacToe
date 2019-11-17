@@ -6,7 +6,7 @@ declare -a boardPosition
 
 PLAYER=X
 COMPUTER=O
-turn=0
+9=turn
 
 function whoPlayFirst() {
 	random=$((RANDOM%2))
@@ -18,7 +18,63 @@ function whoPlayFirst() {
 	else
 		echo "COMPUTER play first"
 		printBoard
+		#playGame $random
 	fi
+}
+
+function playGame() {
+	a=$1
+  	limit=0
+  	# limit 0 work 1 stop 
+  	while [ $limit -eq 0 ]
+  	do
+    		if [ $a -eq 1 ]
+    		then
+      			echo "PLay Player Enter your number : \c"
+      			read cellNumber
+      				boardPosition[$cellNumber]=$PLAYER
+      				printBoard
+      				limit=$( checkWinCondition )
+        	else
+      			printf Play by computer
+     			printBoard
+  		fi
+		if [ $limit -eq 1 ]
+		then
+			echo "Player win"
+		fi
+  done
+}
+
+function checkWinCondition () {
+	i=1
+    	if [[ ( ${boardPosition[$i]} -eq $PLAYER ) && ( ${boardPosition[$(($i+1))]} -eq $PLAYER ) && ( ${boardPosition[$(($i+2))]} -eq $PLAYER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i+3"]} -eq $PLAYER ) && ( ${boardPosition["$i+4"]} -eq $PLAYER ) && ( ${boardPosition["$i+5"]} -eq $PLAYER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i+6"]} -eq $PLAYER ) && ( ${boardPosition["$i+7"]} -eq $PLAYER ) && ( ${boardPosition["$i+8"]} -eq $PLAYER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i"]} -eq $PLAYER ) && ( ${boardPosition["$i+3"]} -eq $PLAYER ) && ( ${boardPosition["$i+6"]} -eq $PLAYER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i+1"]} -eq $PLAYER ) && ( ${boardPosition["$i+4"]} -eq $PLAYER ) && ( ${boardPosition["$i+7"]} -eq $PLAYER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i+2"]} -eq $PLAYER ) && ( ${boardPosition["$i+5"]} -eq $PLAYER ) && ( ${boardPosition["$i+8"]} -eq $PLAYER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i"]} -eq $PLAYER ) && ( ${boardPosition["$i+4"]} -eq $PLAYER ) && ( ${boardPosition["$i+8"]} -eq $PLAYER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i+2"]} -eq $PLAYER ) && ( ${boardPosition["$i+4"]} -eq $PLAYER ) && ( ${boardPosition["$i+6"]} -eq $PLAYER ) ]]
+    	then
+      		echo 1
+    	else
+      		echo 0
+    	fi
 }
 
 function printBoard () {
@@ -34,19 +90,7 @@ function printBoard () {
 
 for (( i=1; i<=9; i++ ))
 do
-	boardPosition[$i]=-
+	boardPosition[$i]=$i
 done
-
-function playGame() {
-	a=$1
-	if [ $a -eq 1 ]
-	then
-		echo "Player Enter your number : \c"
-		read cellNumber
-		boardPosition[$cellNumber]=$PLAYER
-		printBoard
-	fi
-
-}
 
 whoPlayFirst
