@@ -1,0 +1,125 @@
+function checkWinCondition () {
+	i=1
+    	if [[ ( ${boardPosition[$i]} -eq $PLAYER ) && ( ${boardPosition[$(($i+1))]} -eq $PLAYER ) && ( ${boardPosition[$(($i+2))]} -eq $PLAYER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i+3"]} -eq $PLAYER ) && ( ${boardPosition["$i+4"]} -eq $PLAYER ) && ( ${boardPosition["$i+5"]} -eq $PLAYER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i+6"]} -eq $PLAYER ) && ( ${boardPosition["$i+7"]} -eq $PLAYER ) && ( ${boardPosition["$i+8"]} -eq $PLAYER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i"]} -eq $PLAYER ) && ( ${boardPosition["$i+3"]} -eq $PLAYER ) && ( ${boardPosition["$i+6"]} -eq $PLAYER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i+1"]} -eq $PLAYER ) && ( ${boardPosition["$i+4"]} -eq $PLAYER ) && ( ${boardPosition["$i+7"]} -eq $PLAYER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i+2"]} -eq $PLAYER ) && ( ${boardPosition["$i+5"]} -eq $PLAYER ) && ( ${boardPosition["$i+8"]} -eq $PLAYER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i"]} -eq $PLAYER ) && ( ${boardPosition["$i+4"]} -eq $PLAYER ) && ( ${boardPosition["$i+8"]} -eq $PLAYER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i+2"]} -eq $PLAYER ) && ( ${boardPosition["$i+4"]} -eq $PLAYER ) && ( ${boardPosition["$i+6"]} -eq $PLAYER ) ]]
+    	then
+      		echo 1 
+
+
+	elif [[ ( ${boardPosition[$i]} -eq $COMPUTER ) && ( ${boardPosition[$(($i+1))]} -eq $COMPUTER ) && ( ${boardPosition[$(($i+2))]} -eq $COMPUTER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i+3"]} -eq $COMPUTER ) && ( ${boardPosition["$i+4"]} -eq $COMPUTER ) && ( ${boardPosition["$i+5"]} -eq $COMPUTER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i+6"]} -eq $COMPUTER ) && ( ${boardPosition["$i+7"]} -eq $COMPUTER ) && ( ${boardPosition["$i+8"]} -eq $COMPUTER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i"]} -eq $COMPUTER ) && ( ${boardPosition["$i+3"]} -eq $COMPUTER ) && ( ${boardPosition["$i+6"]} -eq $COMPUTER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i+1"]} -eq $COMPUTER ) && ( ${boardPosition["$i+4"]} -eq $COMPUTER ) && ( ${boardPosition["$i+7"]} -eq $COMPUTER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i+2"]} -eq $COMPUTER ) && ( ${boardPosition["$i+5"]} -eq $COMPUTER ) && ( ${boardPosition["$i+8"]} -eq $COMPUTER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i"]} -eq $COMPUTER ) && ( ${boardPosition["$i+4"]} -eq $COMPUTER ) && ( ${boardPosition["$i+8"]} -eq $COMPUTER ) ]]
+    	then
+      		echo 1
+    	elif [[ ( ${boardPosition["$i+2"]} -eq $COMPUTER ) && ( ${boardPosition["$i+4"]} -eq $COMPUTER ) && ( ${boardPosition["$i+6"]} -eq $COMPUTER ) ]]
+    	then
+      		echo 1    	    	
+	else
+      		echo 0
+    	fi
+}
+
+
+
+
+function checkWinCondition () {
+	for (( a=1; a<=8; a++ ))
+	do
+		line=""
+		i=1
+		case $a in
+			1 )
+			line= echo "${boardPosition["$i"]}${boardPosition["$i+1"]}${boardPosition["$i+2"]}";;
+			2 )
+			line= echo "${boardPosition["$i+3"]}${boardPosition["$i+4"]}${boardPosition["$i+5"]}";;
+			3 )
+			line= echo "${boardPosition["$i+6"]}${boardPosition["$i+7"]}${boardPosition["$i+8"]}";;
+			4 )
+			line= echo "${boardPosition["$i"]}${boardPosition["$i+3"]}${boardPosition["$i+6"]}";;
+			5 )
+			line= echo "${boardPosition["$i+1"]}${boardPosition["$i+4"]}${boardPosition["$i+7"]}";;
+			6 )
+			line= echo "${boardPosition["$i+2"]}${boardPosition["$i+5"]}${boardPosition["$i+8"]}";;
+			7 )
+			line= echo "${boardPosition["$i"]}${boardPosition["$i+4"]}${boardPosition["$i+8"]}";;
+			8 )
+			line= echo "${boardPosition["$i+2"]}${boardPosition["$i+4"]}${boardPosition["$i+6"]}";;
+		esac
+			if [ $line -eq "XXX" ]
+			then	
+				echo 1
+			elif [ $line -eq "OOO" ]
+			then
+				echo 0
+			fi
+	done
+}
+
+
+
+function checkWinCondition () {
+	i=1
+    	if [[ ( ${boardPosition["$i"]} -eq ${boardPosition["$i+1"]} ) && ( ${boardPosition["$i+1"]} -eq ${boardPosition["$i+2"]} ) && ( ${boardPosition["$i+2"]} -eq ${boardPosition["$i"]} ) ]]
+	then 
+		echo 1
+	elif [[ ( ${boardPosition["$i+3"]} -eq ${boardPosition["$i+4"]} ) && ( ${boardPosition["$i+4"]} -eq ${boardPosition["$i+5"]} ) && ( ${boardPosition["$i+3"]} -eq ${boardPosition["$i+5"]} ) ]]
+    	then
+      		echo 1
+	elif [[ ( ${boardPosition["$i+6"]} -eq ${boardPosition["$i+7"]} ) && ( ${boardPosition["$i+7"]} -eq ${boardPosition["$i+8"]} ) && ( ${boardPosition["$i+8"]} -eq ${boardPosition["$i+6"]} ) ]]
+	then
+		echo 1
+	elif [[ ( ${boardPosition["$i"]} -eq ${boardPosition["$i+3"]} ) && ( ${boardPosition["$i+3"]} -eq ${boardPosition["$i+6"]} ) && ( ${boardPosition["$i"]} -eq ${boardPosition["$i+6"]} ) ]]
+	then
+		echo 1
+	elif [[ ( ${boardPosition["$i+1"]} -eq ${boardPosition["$i+4"]} ) && ( ${boardPosition["$i+4"]} -eq ${boardPosition["$i+7"]} ) && ( ${boardPosition["$i+1"]} -eq ${boardPosition["$i+7"]} ) ]]
+	then
+		echo 1
+	elif [[ ( ${boardPosition["$i+2"]} -eq ${boardPosition["$i+5"]} ) && ( ${boardPosition["$i+5"]} -eq ${boardPosition["$i+8"]} ) && ( ${boardPosition["$i+2"]} -eq ${boardPosition["$i+8"]} ) ]]
+	then
+		echo 1
+	elif [[ ( ${boardPosition["$i"]} -eq ${boardPosition["$i+4"]} ) && ( ${boardPosition["$i+4"]} -eq ${boardPosition["$i+8"]} ) && ( ${boardPosition["$i"]} -eq ${boardPosition["$i+8"]} ) ]]
+	then
+		echo 1
+	elif [[ ( ${boardPosition["$i+2"]} -eq ${boardPosition["$i+4"]} ) && ( ${boardPosition["$i+4"]} -eq ${boardPosition["$i+6"]} ) && ( ${boardPosition["$i+2"]} -eq ${boardPosition["$i+6"]} ) ]]
+	then
+		echo 1
+	else
+      		echo 0
+    	fi
+}
