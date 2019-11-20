@@ -91,7 +91,7 @@ function winComAtRowPosition(){
 		then
 			for (( innerLoopCounter=$row; innerLoopCounter<=$(($row+2)); innerLoopCounter++ ))
 			do
-				if [[ ${boardPosition[$innerLoopCounter]} -ne $COMPUTER ]]
+				if [[ ${boardPosition[$innerLoopCounter]} -ne $COMPUTER ]] || [[ ${boardPosition[$innerLoopCounter]} -ne $PLAYER ]]
 				then
 					positionToReturn=$innerLoopCounter
 				fi
@@ -112,7 +112,7 @@ function WinComAtColoumnPosition(){
 		then
 			for (( innerLoopCounter=1; innerLoopCounter<=3; innerLoopCounter++ ))
 			do
-				if [[ ${boardPosition[$column]} -ne $COMPUTER ]]
+				if [[ ${boardPosition[$column]} -ne $COMPUTER ]] || [[ ${boardPosition[$innerLoopCounter]} -ne $PLAYER ]]
 				then
 					positionToReturn=$column
 				fi
@@ -130,7 +130,7 @@ function winComAtDiagonalPosition(){
 	then
 		for (( innerLoopCounter=1; innerLoopCounter<=3; innerLoopCounter++ ))
 		do
-			if [[ ${boardPosition[$diagCount]} -ne $COMPUTER ]]
+			if [[ ${boardPosition[$diagCount]} -ne $COMPUTER ]] || [[ ${boardPosition[$innerLoopCounter]} -ne $PLAYER ]]
 			then
 				positionToReturn=$diagCount
 			fi
@@ -141,7 +141,7 @@ function winComAtDiagonalPosition(){
 		for (( innerLoopCounter=1; innerLoopCounter<=3; innerLoopCounter++ ))
 		do
 			count=$(( $count+2 ))
-			if [[ ${boardPosition[$count]} -ne $COMPUTER ]]
+			if [[ ${boardPosition[$count]} -ne $COMPUTER ]] || [[ ${boardPosition[$innerLoopCounter]} -ne $PLAYER ]]
 			then
 				positionToReturn=$count
 			fi
