@@ -66,22 +66,21 @@ function checkCompWinningCondition(){
 
 	if [[ $computerRowPosition -gt 0 ]]
 	then
-		pos=$computerRowPosition
+		position=$computerRowPosition
 		positionToReturn=0;
 	elif [[ $computerColumnPosition -gt 0 ]]
 	then
-		pos=$computerColumnPosition
+		position=$computerColumnPosition
 		positionToReturn=0;
 	elif [[ $computerDiagonalPosition -gt 0 ]]
 	then
-		pos=$computerDiagonalPosition
+		position=$computerDiagonalPosition
 		positionToReturn=0;
 	else
-		pos=$((RANDOM%9+1))
+		position=$((RANDOM%9+1))
 	fi
-	echo $pos
+	echo $position
 }
-
 
 function winComAtRowPosition(){
 	local row=0;
@@ -160,15 +159,14 @@ function checkWinCondition () {
 }
 
 function checkRows () {
-	symbol=$1
 	loopCheck=1
 	position=1
 	while [ $loopCheck -le 3 ]
 	do
-		if [[ ${boardPosition[$position]} == ${boardPosition[$(($position+1))]} ]] && [[ ${boardPosition[$(($position+1))]} == ${boardPosition[$(($position+2))]} ]] && [[ ${boardPosition[$position]} == $symbol ]]
+		if [[ ${boardPosition[$position]} == ${boardPosition[$(($position+1))]} ]] && [[ ${boardPosition[$(($position+1))]} == ${boardPosition[$(($position+2))]} ]] && [[ ${boardPosition[$position]} == $1 ]]
 		then
 			counter=true
-			echo "$symbol Won"
+			echo "$1 Won"
 			break
 		else
 			position=$(($position+3))
@@ -178,20 +176,19 @@ function checkRows () {
 }
 
 function checkDiagonals () {
-	symbol=$1
 	loopCheck=1
 	position=1
 	while [ $loopCheck -le 3 ]
 	do
-		if [[ ${boardPosition[$position]} == ${boardPosition[$(($position+4))]} ]] && [[ ${boardPosition[$(($position+4))]} == ${boardPosition[$(($position+8))]} ]] && [[ ${boardPosition[$position]} == $symbol ]]
+		if [[ ${boardPosition[$position]} == ${boardPosition[$(($position+4))]} ]] && [[ ${boardPosition[$(($position+4))]} == ${boardPosition[$(($position+8))]} ]] && [[ ${boardPosition[$position]} == $1 ]]
 		then
 			counter=true
-			echo "$symbol Won"
+			echo "$1 Won"
 			break
-		elif [[ ${boardPosition[$(($position+2))]} == ${boardPosition[$(($position+4))]} ]] && [[ ${boardPosition[$(($position+4))]} == ${boardPosition[$(($position+6))]} ]]  && [[ ${boardPosition[$(($position+2))]} == $symbol ]]
+		elif [[ ${boardPosition[$(($position+2))]} == ${boardPosition[$(($position+4))]} ]] && [[ ${boardPosition[$(($position+4))]} == ${boardPosition[$(($position+6))]} ]]  && [[ ${boardPosition[$(($position+2))]} == $1 ]]
 		then
+			echo "$1 Won"
 			counter=true
-			echo "$symbol Won"
 			break
 		fi
 		((loopCheck++))
@@ -199,15 +196,14 @@ function checkDiagonals () {
 }
 
 function checkColumns () {
-	symbol=$1
 	loopCheck=1
 	position=1
 	while [ $loopCheck -le 3 ]
 	do
 		if [[ ${boardPosition[$position]} == ${boardPosition[$(($position+3))]} ]] && [[ ${boardPosition[$(($position+3))]} == ${boardPosition[$(($position+6))]} ]]  && [[ ${boardPosition[$position]} == $symbol ]]
 		then
+			echo "$1 Won"
 			counter=true
-			echo "$symbol Won"
 			break
 		else
 			position=$(($position+1))
@@ -219,25 +215,25 @@ function checkColumns () {
 function gameTieCheck () {
 	if [ $gameCount -ge 9 ]
 	then
-		#echo "Match Tie"
+		echo "Match Tie"
 		counter=true
 	fi
 }
 
 function printBoard () {
-	i=1
+	index=1
 	for ((Counter=0; Counter<3; Counter++))
 	do
 		echo "|-----|-----|-----|"
-		echo "|  "${boardPosition[counter+i]}"  |  "${boardPosition[counter+i+1]}"  |  "${boardPosition[counter+i+2]}"  |"
+		echo "|  "${boardPosition[counter+index]}"  |  "${boardPosition[counter+index+1]}"  |  "${boardPosition[counter+index+2]}"  |"
 		echo "|-----|-----|-----|"
-		i=$((i+3))
+		index=$(($index+3))
 	done
 }
 
-for (( i=1; i<=9; i++ ))
+for (( index=1; index<=9; index++ ))
 do
-	boardPosition[$i]=$i
+	boardPosition[$index]=$index
 done
 
 whoPlayFirst
