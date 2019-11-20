@@ -1,7 +1,6 @@
 #!/bin/bash
 
 echo "welcome in tic tac toe game"
-
 declare -a boardPosition
 
 PLAYER="X"
@@ -44,13 +43,13 @@ function playGame() {
 			fi
         	else
 			echo "Computer Enter your Slot :"
-			randomCellNumber=$((RANDOM%9+1))
+			randomCellNumber=$( checkCompWinningCondition )
 			if [[ ( "${boardPosition[$randomCellNumber]}" == $PLAYER ) || ( "${boardPosition[$randomCellNumber]}" == $COMPUTER ) ]]
 			then
 				echo "Slot already take"
 				playGame $flag
 			else
-				boardPosition[$randomCellNumber]="$COMPUTER"		
+				boardPosition[$randomCellNumber]="$COMPUTER"
 				printBoard
       				checkWinCondition $COMPUTER
 				flag=1
@@ -60,11 +59,103 @@ function playGame() {
   	done
 }
 
+function checkCompWinningCondition(){
+	computerRowPosition="$( winComAtRowPosition )"
+	computerColumnPosition="$( WinComAtColoumnPosition )"
+	computerDiagonalPosition="$( winComAtDiagonalPosition )"
+
+	if [[ $computerRowPosition -gt 0 ]]
+	then
+		pos=$computerRowPosition
+		positionToReturn=0;
+	elif [[ $computerColumnPosition -gt 0 ]]
+	then
+		pos=$computerColumnPosition
+		positionToReturn=0;
+	elif [[ $computerDiagonalPosition -gt 0 ]]
+	then
+		pos=$computerDiagonalPosition
+		positionToReturn=0;
+	else
+		pos=$((RANDOM%9+1))
+	fi
+	echo $pos
+}
+
+
+function winComAtRowPosition(){
+	local row=0;
+	for (( count=1; count<=3; count++ ))
+	do
+		row=$(( $row+1 ))
+		if [[ ${boardPosition[$row]} == ${boardPosition[$row+1]} ]] || [[ ${boardPosition[$row+1]} == ${boardPosition[$row+2]} ]] || [[ ${boardPosition[$row+2]} == ${boardPosition[$row]} ]]
+		then
+			for (( innerLoopCounter=$row; innerLoopCounter<=$(($row+2)); innerLoopCounter++ ))
+			do
+				if [[ ${boardPosition[$innerLoopCounter]} -ne $COMPUTER ]]
+				then
+					positionToReturn=$innerLoopCounter
+				fi
+			done
+		else
+			row=$(( $row+2 ))
+		fi
+	done
+	echo $positionToReturn
+}
+
+function WinComAtColoumnPosition(){
+	local column=0;
+	for (( count=1; count<=3; count++ ))
+	do
+		column=$(( $column+1 ))
+		if [[ ${boardPosition[$column]} == ${boardPosition[$column+3]} ]] || [[ ${boardPosition[$column+3]} == ${boardPosition[$column+6]} ]] || [[ ${boardPosition[$column+6]} == ${boardPosition[$column]} ]] 
+		then
+			for (( innerLoopCounter=1; innerLoopCounter<=3; innerLoopCounter++ ))
+			do
+				if [[ ${boardPosition[$column]} -ne $COMPUTER ]]
+				then
+					positionToReturn=$column
+				fi
+				column=$(( $column+3 ))
+			done
+		fi
+	done
+	echo $positionToReturn
+}
+
+function winComAtDiagonalPosition(){
+	local diagCount=1;
+	local count=1;
+	if [[ ${boardPosition[$diagCount]} == ${boardPosition[$diagCount+4]} ]] || [[ ${boardPosition[$diagCount+4]} == ${boardPosition[$diagCount+8]} ]] || [[ ${boardPosition[$diagCount+8]} == ${boardPosition[$diagCount]} ]]
+	then
+		for (( innerLoopCounter=1; innerLoopCounter<=3; innerLoopCounter++ ))
+		do
+			if [[ ${boardPosition[$diagCount]} -ne $COMPUTER ]]
+			then
+				positionToReturn=$diagCount
+			fi
+			diagCount=$(( $diagCount+4 ))
+		done
+	elif [[ ${boardPosition[$count+2]} == ${boardPosition[$count+4]} ]] || [[ ${boardPosition[$count+4]} == ${boardPosition[$count+6]} ]] || [[ ${boardPosition[$count+6]} == ${boardPosition[$count+2]} ]]
+	then
+		for (( innerLoopCounter=1; innerLoopCounter<=3; innerLoopCounter++ ))
+		do
+			count=$(( $count+2 ))
+			if [[ ${boardPosition[$count]} -ne $COMPUTER ]]
+			then
+				positionToReturn=$count
+			fi
+		done
+	fi
+	echo $positionToReturn
+}
+
+
 function checkWinCondition () {
-	symbol=$1
-	checkRows $symbol
-	checkColumns $symbol
-	checkDiagonals $symbol
+	checkRows $1
+	checkColumns $1
+	checkDiagonals $1
 	gameTieCheck
 }
 
@@ -126,9 +217,9 @@ function checkColumns () {
 }
 
 function gameTieCheck () {
-	if [ $gameCount -eq 9 ]
+	if [ $gameCount -ge 9 ]
 	then
-		echo "Match Tie"
+		#echo "Match Tie"
 		counter=true
 	fi
 }
@@ -150,3 +241,4 @@ do
 done
 
 whoPlayFirst
+
