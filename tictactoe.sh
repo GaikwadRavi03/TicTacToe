@@ -36,7 +36,7 @@ function playGame() {
 				echo "Slot already taken, Re-enter slot number"
 				playGame $flag
 			else
-      				boardPosition[$cellNumber]="$PLAYER"
+      				boardPosition[$cellNumber]=$PLAYER
       				printBoard
       				checkWinCondition $PLAYER
 				flag=0
@@ -44,12 +44,13 @@ function playGame() {
         	else
 			echo "Computer Enter your Slot :"
 			randomCellNumber=$( checkCompWinningCondition )
+			echo "randomCellNumber : $randomCellNumber"
 			if [[ ( "${boardPosition[$randomCellNumber]}" == $PLAYER ) || ( "${boardPosition[$randomCellNumber]}" == $COMPUTER ) ]]
 			then
 				echo "Slot already take"
 				playGame $flag
 			else
-				boardPosition[$randomCellNumber]="$COMPUTER"
+				boardPosition[$randomCellNumber]=$COMPUTER
 				printBoard
       				checkWinCondition $COMPUTER
 				flag=1
@@ -60,10 +61,10 @@ function playGame() {
 }
 
 function checkCompWinningCondition(){
-	computerRowPosition="$( winComAtRowPosition )"
-	computerColumnPosition="$( WinComAtColoumnPosition )"
-	computerDiagonalPosition="$( winComAtDiagonalPosition )"
-
+	computerRowPosition=$( winComAtRowPosition )
+	computerColumnPosition=$( winComAtColoumnPosition )
+	computerDiagonalPosition=$( winComAtDiagonalPosition )
+	
 	if [[ $computerRowPosition -gt 0 ]]
 	then
 		position=$computerRowPosition
@@ -103,7 +104,7 @@ function winComAtRowPosition(){
 	echo $positionToReturn
 }
 
-function WinComAtColoumnPosition(){
+function winComAtColoumnPosition(){
 	local column=0;
 	for (( count=1; count<=3; count++ ))
 	do
