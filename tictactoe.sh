@@ -64,7 +64,7 @@ function checkCompWinningCondition(){
 	computerRowPosition=$( winComAtRowPosition )
 	computerColumnPosition=$( winComAtColoumnPosition )
 	computerDiagonalPosition=$( winComAtDiagonalPosition )
-	
+	computerTakesCorners=$( takesCorner )
 	if [[ $computerRowPosition -gt 0 ]]
 	then
 		position=$computerRowPosition
@@ -78,11 +78,28 @@ function checkCompWinningCondition(){
 		position=$computerDiagonalPosition
 		positionToReturn=0;
 	else
-		position=$((RANDOM%9+1))
+		position=$computerTakesCorners
 	fi
 	echo $position
 }
 
+function takesCorner(){
+	local count=1
+	local positionToReturn=1
+	for (( innerLoopCounter=1; innerLoopCounter<=2; innerLoopCounter++ ))
+	do
+		if [[ ${boardPosition[$count]} -ne $COMPUTER ]] || [[ ${boardPosition[$count]} -ne $PLAYER ]]
+		then
+			positionToReplay=$count
+		elif [[ ${boardPosition[$count+2]} -ne $COMPUTER ]] || [[ ${boardPosition[$count+2]} -ne $PLAYER ]]
+		then
+			positionToReturn=$(( $count+2 ))
+		fi
+		count=$(( $count+6 ))
+	done
+	echo $positionToReturn
+}
+	
 function winComAtRowPosition(){
 	local row=0;
 	for (( count=1; count<=3; count++ ))
