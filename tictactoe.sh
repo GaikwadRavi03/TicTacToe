@@ -5,7 +5,6 @@ declare -a boardPosition
 
 PLAYER="X"
 COMPUTER="O"
-turn=9
 counter=false
 gameCount=1
 
@@ -30,27 +29,27 @@ function playGame() {
     		if [ $flag -eq 1 ]
     		then
       			echo "Player Enter your Slot :"
-      			read cellNumber
-			if [[ ( "${boardPosition[$cellNumber]}" == $PLAYER ) || ( "${boardPosition[$cellNumber]}" == $COMPUTER ) ]]
+      			read playerCellNumber
+			if [[ ( "${boardPosition[$playerCellNumber]}" == $PLAYER ) || ( "${boardPosition[$playerCellNumber]}" == $COMPUTER ) ]]
 			then
 				echo "Slot already taken, Re-enter slot number"
 				playGame $flag
 			else
-      				boardPosition[$cellNumber]=$PLAYER
+      				boardPosition[$playerCellNumber]=$PLAYER
       				printBoard
       				checkWinCondition $PLAYER
 				flag=0
 			fi
         	else
 			echo "Computer Enter your Slot :"
-			randomCellNumber=$( checkCompWinningCondition )
-			echo "randomCellNumber : $randomCellNumber"
-			if [[ ( "${boardPosition[$randomCellNumber]}" == $PLAYER ) || ( "${boardPosition[$randomCellNumber]}" == $COMPUTER ) ]]
+			computerCellNumber=$( checkCompWinningCondition )
+			echo "computerCellNumber : $computerCellNumber"
+			if [[ ( "${boardPosition[$computerCellNumber]}" == $PLAYER ) || ( "${boardPosition[$computerCellNumber]}" == $COMPUTER ) ]]
 			then
-				echo "Slot already take"
+				echo "Slot already taken"
 				playGame $flag
 			else
-				boardPosition[$randomCellNumber]=$COMPUTER
+				boardPosition[$computerCellNumber]=$COMPUTER
 				printBoard
       				checkWinCondition $COMPUTER
 				flag=1
@@ -80,16 +79,20 @@ function checkCompWinningCondition(){
 	then
 		position=$computerDiagonalPosition
 		positionToReturn=0;
-	elif [[ $computerTakesCenter -gt 0 ]]
+	elif [[ $computerTakesCorners -gt 0 ]]
 	then
 		position=$computerTakesCorners
 		positionToReturn=0;
-	elif [[ $computerTakesSide -gt 0 ]]
+	elif [[ $computerTakesCenter -gt 0 ]]
 	then
 		position=$computerTakesCenter
 		positionToReturn=0;
-	else
+	elif [[ $computerTakesSide -gt 0 ]]
+	then
 		position=$computerTakesSide
+		positionToReturn=0;
+	else
+		position=$((RANDOM%9+1))
 	fi
 	echo $position
 }
@@ -115,17 +118,16 @@ function takesSide(){
 
 function takesCorner(){
 	local count=1
-	local positionToReturn=1
 	for (( innerLoopCounter=1; innerLoopCounter<=2; innerLoopCounter++ ))
 	do
 		if [[ ${boardPosition[$count]} -ne $COMPUTER ]] || [[ ${boardPosition[$count]} -ne $PLAYER ]]
 		then
 			positionToReplay=$count
-		elif [[ ${boardPosition[$count+2]} -ne $COMPUTER ]] || [[ ${boardPosition[$count+2]} -ne $PLAYER ]]
+		elif [[ ${boardPosition[$(($count+2))]} -ne $COMPUTER ]] || [[ ${boardPosition[$(($count+2))]} -ne $PLAYER ]]
 		then
-			positionToReturn=$(( $count+2 ))
+			positionToReturn=$(($count+2))
 		fi
-		count=$(( $count+6 ))
+		count=$(($count+6))
 	done
 	echo $positionToReturn
 }
@@ -145,7 +147,7 @@ function winComAtRowPosition(){
 	for (( count=1; count<=3; count++ ))
 	do
 		row=$(( $row+1 ))
-		if [[ ${boardPosition[$row]} == ${boardPosition[$row+1]} ]] || [[ ${boardPosition[$row+1]} == ${boardPosition[$row+2]} ]] || [[ ${boardPosition[$row+2]} == ${boardPosition[$row]} ]]
+		if [[ ${boardPosition[$row]} == ${boardPosition[$(($row+1))]} ]] || [[ ${boardPosition[$(($row+1))]} == ${boardPosition[$(($row+2))]} ]] || [[ ${boardPosition[$(($row+2))]} == ${boardPosition[$row]} ]]
 		then
 			for (( innerLoopCounter=$row; innerLoopCounter<=$(($row+2)); innerLoopCounter++ ))
 			do
@@ -167,7 +169,7 @@ function winComAtColoumnPosition(){
 	for (( count=1; count<=3; count++ ))
 	do
 		column=$(( $column+1 ))
-		if [[ ${boardPosition[$column]} == ${boardPosition[$column+3]} ]] || [[ ${boardPosition[$column+3]} == ${boardPosition[$column+6]} ]] || [[ ${boardPosition[$column+6]} == ${boardPosition[$column]} ]] 
+		if [[ ${boardPosition[$column]} == ${boardPosition[$(($column+3))]} ]] || [[ ${boardPosition[$(($column+3))]} == ${boardPosition[$(($column+6))]} ]] || [[ ${boardPosition[$(($column+6))]} == ${boardPosition[$column]} ]] 
 		then
 			for (( innerLoopCounter=1; innerLoopCounter<=3; innerLoopCounter++ ))
 			do
@@ -190,7 +192,7 @@ function winComAtColoumnPosition(){
 function winComAtDiagonalPosition(){
 	local diagCount=1;
 	local count=1;
-	if [[ ${boardPosition[$diagCount]} == ${boardPosition[$diagCount+4]} ]] || [[ ${boardPosition[$diagCount+4]} == ${boardPosition[$diagCount+8]} ]] || [[ ${boardPosition[$diagCount+8]} == ${boardPosition[$diagCount]} ]]
+	if [[ ${boardPosition[$diagCount]} == ${boardPosition[$(($diagCount+4))]} ]] || [[ ${boardPosition[$(($diagCount+4))]} == ${boardPosition[$(($diagCount+8))]} ]] || [[ ${boardPosition[$(($diagCount+8))]} == ${boardPosition[$diagCount]} ]]
 	then
 		for (( innerLoopCounter=1; innerLoopCounter<=3; innerLoopCounter++ ))
 		do
@@ -200,7 +202,7 @@ function winComAtDiagonalPosition(){
 			fi
 			diagCount=$(( $diagCount+4 ))
 		done
-	elif [[ ${boardPosition[$count+2]} == ${boardPosition[$count+4]} ]] || [[ ${boardPosition[$count+4]} == ${boardPosition[$count+6]} ]] || [[ ${boardPosition[$count+6]} == ${boardPosition[$count+2]} ]]
+	elif [[ ${boardPosition[$(($count+2))]} == ${boardPosition[$(($count+4))]} ]] || [[ ${boardPosition[$(($count+4))]} == ${boardPosition[$(($count+6))]} ]] || [[ ${boardPosition[$(($count+6))]} == ${boardPosition[$(($count+2))]} ]]
 	then
 		for (( innerLoopCounter=1; innerLoopCounter<=3; innerLoopCounter++ ))
 		do
@@ -289,7 +291,7 @@ function printBoard () {
 	for ((Counter=0; Counter<3; Counter++))
 	do
 		echo "|-----|-----|-----|"
-		echo "|  "${boardPosition[counter+index]}"  |  "${boardPosition[counter+index+1]}"  |  "${boardPosition[counter+index+2]}"  |"
+		echo "|  "${boardPosition[counter+$index]}"  |  "${boardPosition[counter+index+1]}"  |  "${boardPosition[counter+index+2]}"  |"
 		echo "|-----|-----|-----|"
 		index=$(($index+3))
 	done
