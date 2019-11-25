@@ -5,7 +5,7 @@ declare -a boardPosition
 
 PLAYER="X"
 COMPUTER="O"
-counter=false
+winLossFlag=false
 gameCount=1
 
 function whoPlayFirst() {
@@ -13,18 +13,16 @@ function whoPlayFirst() {
 	if [ $random -eq 1 ]
 	then
 		echo "PLAYER play first"
-		printBoard
-		playGame $random
 	else
 		echo "COMPUTER play first"
-		printBoard
-		playGame $random
 	fi
+	printBoard
+	playGame $random
 }
 
 function playGame() {
 	local flag=$1
-  	while [ $counter == false ]
+  	while [ $winLossFlag == false ]
   	do
     		if [ $flag -eq 1 ]
     		then
@@ -231,7 +229,7 @@ function checkRows () {
 	do
 		if [[ ${boardPosition[$position]} == ${boardPosition[$(($position+1))]} ]] && [[ ${boardPosition[$(($position+1))]} == ${boardPosition[$(($position+2))]} ]] && [[ ${boardPosition[$position]} == $1 ]]
 		then
-			counter=true
+			winLossFlag=true
 			echo "$1 Won"
 			break
 		else
@@ -248,13 +246,13 @@ function checkDiagonals () {
 	do
 		if [[ ${boardPosition[$position]} == ${boardPosition[$(($position+4))]} ]] && [[ ${boardPosition[$(($position+4))]} == ${boardPosition[$(($position+8))]} ]] && [[ ${boardPosition[$position]} == $1 ]]
 		then
-			counter=true
+			winLossFlag=true
 			echo "$1 Won"
 			break
 		elif [[ ${boardPosition[$(($position+2))]} == ${boardPosition[$(($position+4))]} ]] && [[ ${boardPosition[$(($position+4))]} == ${boardPosition[$(($position+6))]} ]]  && [[ ${boardPosition[$(($position+2))]} == $1 ]]
 		then
 			echo "$1 Won"
-			counter=true
+			winLossFlag=true
 			break
 		fi
 		((loopCheck++))
@@ -269,7 +267,7 @@ function checkColumns () {
 		if [[ ${boardPosition[$position]} == ${boardPosition[$(($position+3))]} ]] && [[ ${boardPosition[$(($position+3))]} == ${boardPosition[$(($position+6))]} ]]  && [[ ${boardPosition[$position]} == $symbol ]]
 		then
 			echo "$1 Won"
-			counter=true
+			winLossFlag=true
 			break
 		else
 			position=$(($position+1))
@@ -282,7 +280,7 @@ function gameTieCheck () {
 	if [ $gameCount -ge 9 ]
 	then
 		echo "Match Tie"
-		counter=true
+		winLossFlag=true
 	fi
 }
 
